@@ -1,11 +1,11 @@
+// src/pages/public/Login.jsx
+
 import {
   Box,
   TextField,
   Button,
   Paper,
   Typography,
-  IconButton,
-  Tooltip,
   Snackbar,
   Alert,
 } from '@mui/material';
@@ -13,31 +13,28 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
 import useLogin from '../../hooks/useLogin';
 import { useAuth } from '../../context/AuthContext';
+import ThemeToggleButton from '../../components/ThemeToggleButton'; // Importa botão global
+import { useThemeMode } from '../../context/ThemeContext'; // Opcional: só se quiser exibir o modo
 
-
-export default function LoginPage({ toggleTheme, mode }) {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, loading } = useLogin();
-  const { login: authLogin } = useAuth();  // função para salvar token no contexto
-  //const navigate = useNavigate();
+  const { login: authLogin } = useAuth();  
+  const navigate = useNavigate(); // Agora pode redirecionar
 
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
-    severity: 'success', // 'success' | 'error'
+    severity: 'success',
   });
 
-
-  function handleCloseSnackbar(_, reason) {
+  const handleCloseSnackbar = (_, reason) => {
     if (reason === 'clickaway') return;
     setSnackbar({ ...snackbar, open: false });
-  }
-  
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -61,9 +58,9 @@ export default function LoginPage({ toggleTheme, mode }) {
       });
       return;
     }
-    console.log(data);
-    authLogin(data.token);  // Supondo que o token veio como res.data.token
-    //navigate('/dashboard'); // Redireciona para dashboard
+
+    authLogin(data.token);
+    navigate('/TestLayout'); // Redireciona após login
 
     setSnackbar({
       open: true,
@@ -84,6 +81,7 @@ export default function LoginPage({ toggleTheme, mode }) {
         position: 'relative',
       }}
     >
+      {/* Botão de tema global no topo direito */}
       <Box
         sx={{
           position: 'absolute',
@@ -91,11 +89,7 @@ export default function LoginPage({ toggleTheme, mode }) {
           right: 16,
         }}
       >
-        <Tooltip title={`Alternar para modo ${mode === 'light' ? 'escuro' : 'claro'}`}>
-          <IconButton onClick={toggleTheme} color="inherit">
-            {mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
-          </IconButton>
-        </Tooltip>
+        <ThemeToggleButton />
       </Box>
 
       <Paper
@@ -117,25 +111,26 @@ export default function LoginPage({ toggleTheme, mode }) {
           Painel do Professor
         </Typography>
 
-        <Box component='form' onSubmit={handleSubmit} noValidate>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
           <TextField
-              label="E-mail"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              onChange={(e)=>setEmail(e.target.value)}
-              value={email}
-            />
-
-            <TextField
-              label="Senha"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              onChange={(e)=>setPassword(e.target.value)}
-              value={password}
+            label="E-mail"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
           />
+
+          <TextField
+            label="Senha"
+            type="password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+          />
+
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               type="submit"
@@ -144,12 +139,14 @@ export default function LoginPage({ toggleTheme, mode }) {
               size="large"
               endIcon={<LoginIcon />}
               sx={{ mt: 3 }}
+              disabled={loading}
             >
-              Entrar
+              {loading ? 'Entrando...' : 'Entrar'}
             </Button>
           </Box>
         </Box>
       </Paper>
+
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -165,8 +162,6 @@ export default function LoginPage({ toggleTheme, mode }) {
           {snackbar.message}
         </Alert>
       </Snackbar>
-
-
     </Box>
   );
 }

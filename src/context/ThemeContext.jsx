@@ -5,17 +5,14 @@ import { lightTheme, darkTheme } from '../theme';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  // Função helper pra pegar o tema inicial do localStorage ou usar 'dark' como padrão
-  const getInitialMode = () => {
+  const [mode, setMode] = useState(() => {
     const storedMode = localStorage.getItem('themeMode');
     return storedMode === 'light' || storedMode === 'dark' ? storedMode : 'dark';
-  };
+  });
 
-  const [mode, setMode] = useState(getInitialMode);
-
-  // Sempre que o modo mudar, salvar no localStorage
   useEffect(() => {
     localStorage.setItem('themeMode', mode);
+    document.body.style.backgroundColor = mode === 'light' ? '#F4F7FA' : '#121212';
   }, [mode]);
 
   const toggleTheme = () => {
@@ -27,13 +24,11 @@ export const ThemeProvider = ({ children }) => {
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme }}>
       <MuiThemeProvider theme={theme}>
-        <CssBaseline />
+        <CssBaseline enableColorScheme />
         {children}
       </MuiThemeProvider>
     </ThemeContext.Provider>
   );
 };
 
-export const useThemeMode = () => {
-  return useContext(ThemeContext);
-};
+export const useThemeMode = () => useContext(ThemeContext);

@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
+// Definição de paleta de cores comuns
 const commonPalette = {
   primary: {
     main: '#2A75FF',
@@ -18,7 +19,20 @@ const commonPalette = {
   }
 };
 
-const baseTheme = {
+
+const createCustomTheme = (mode) => createTheme({
+  palette: {
+    mode,
+    ...commonPalette,
+    background: {
+      default: mode === 'light' ? '#F4F7FA' : '#121212',
+      paper: mode === 'light' ? '#FFFFFF' : '#1E1E1E'
+    },
+    text: {
+      primary: mode === 'light' ? '#0F1621' : '#FFFFFF',
+      secondary: mode === 'light' ? '#5E6B73' : '#A0AAB2'
+    }
+  },
   typography: {
     fontFamily: '"Rajdhani", sans-serif',
     button: {
@@ -29,46 +43,34 @@ const baseTheme = {
   shape: {
     borderRadius: 12
   },
+  transitions: {
+    duration: {
+      standard: 900 // Aumenta a duração padrão das transições
+    }
+  },
   components: {
     MuiCssBaseline: {
-      styleOverrides: {
+      styleOverrides: (theme) => ({
         body: {
-          transition: 'all 0.3s ease',
-          minHeight: '100vh'
+          transition: theme.transitions.create(
+            ['background-color', 'color'],
+            { duration: theme.transitions.duration.standard }
+          ),
+          minHeight: '100vh',
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary
+        },
+        // Adiciona transição para componentes MUI
+        '.MuiPaper-root, .MuiAppBar-root, .MuiButton-root, .MuiCard-root': {
+          transition: theme.transitions.create(
+            ['background-color', 'box-shadow', 'border-color'],
+            { duration: theme.transitions.duration.standard }
+          )
         }
-      }
-    }
-  }
-};
-
-export const lightTheme = createTheme({
-  ...baseTheme,
-  palette: {
-    mode: 'light',
-    ...commonPalette,
-    background: {
-      default: '#F4F7FA',
-      paper: '#FFFFFF'
-    },
-    text: {
-      primary: '#0F1621',
-      secondary: '#5E6B73'
+      })
     }
   }
 });
 
-export const darkTheme = createTheme({
-  ...baseTheme,
-  palette: {
-    mode: 'dark',
-    ...commonPalette,
-    background: {
-      default: '#121212',
-      paper: '#1E1E1E'
-    },
-    text: {
-      primary: '#FFFFFF',
-      secondary: '#A0AAB2'
-    }
-  }
-});
+export const lightTheme = createCustomTheme('light');
+export const darkTheme = createCustomTheme('dark');
