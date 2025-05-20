@@ -1,12 +1,36 @@
-# React + Vite
+# 📌 Guia Rápido para Testar o Projeto (Frontend React + Vite)  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Olá, colegas! 👋  
+Se você não tem experiência com GitHub ou programação, não se preocupe! Este guia vai te ajudar passo a passo a rodar o projeto localmente.  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📋 Pré-requisitos  
+Antes de começar, você precisa ter instalado:  
+✅ [Node.js](https://nodejs.org/) (v18 ou superior)  
+✅ [Git](https://git-scm.com/) (para clonar o repositório)  
 
-## Expanding the ESLint configuration
+*(Se não tiver, clique nos links para baixar e instalar!)*  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Como Rodar o Projeto  
+
+### 1️⃣ Clonar o Repositório  
+Abra o **Git Bash** (Windows) ou **Terminal** (macOS/Linux) e digite:  
+
+```bash
+git clone https://github.com/EderDomenici/userFront.git
+cd userFront
+```
+
+### 2️⃣ Instalar as Dependências
+```bash
+npm install
+```
+
+### 3️⃣ Rodar o Projeto
+Depois de instalar as dependências, inicie o servidor de desenvolvimento:
+```bash
+npm run dev
+```
